@@ -37,7 +37,7 @@ class Home extends Component {
 
   addStudent=(e)=>{
     e.preventDefault(e);
-    fetch('http://localhost:8080/student',{
+    fetch('http://localhost:8080/students',{
         method:"POST",
         headers:{
             "Content-type":"application/json"
@@ -72,7 +72,7 @@ class Home extends Component {
   }
 
   groupStudent(){
-    fetch('http://localhost:8080/students/group',{
+    fetch('http://localhost:8080/groups',{
            method:"GET",
            headers:{
                "Content-type":"application/json"
@@ -99,12 +99,12 @@ class Home extends Component {
               
               <div className="group-dispatch">
                 {
-                  this.state.studentsArr.map((stus,index)=>(
-                    <ul key={index} className="group-index">
-                      <p className="group-name">{index+1}组</p>
+                  this.state.studentsArr.map(stus=>(
+                    <ul key={stus.id} className="group-index">
+                      <p className="group-name">{stus.id}组</p>
                       <div className="group-content">
                         {
-                          stus.map(stu=>(
+                          stus.students.map(stu=>(
                             <li className="group-student" key={stu.id}>{`${stu.id}.${stu.name}`}</li>
                           ))
                         }

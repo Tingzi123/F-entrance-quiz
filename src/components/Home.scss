@@ -1,0 +1,66 @@
+.home{
+    // background-color: rgb(167, 163, 163);
+    padding: 0 2% 0 2%;
+}
+
+li{
+    list-style: none;
+}
+
+.group-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group-header button{
+    height: 40px;
+    width: 8.5%;
+    border-style: none;
+    border-radius: 3px;
+    background-color:rgb(207, 61, 61);
+    color: white;
+}
+
+.group-index{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+}
+
+.group-content{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    border: 2px solid rgb(161, 174, 180);
+    padding: 1% 2% 0% 2%;
+}
+
+.group-name{
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    margin: 0px;
+    background-color: rgb(161, 174, 180);
+    color: white;
+}
+
+.group-student{
+    width: 8%;
+    margin-bottom: 1%;
+    padding: 1% 0% 1% 0%;
+    margin-right: 2%;
+    border-radius: 5px;
+    text-align: center;
+    background-color: rgb(218, 218, 219);
+}
+
+.group-content-student{
+    border: none;
+}
+
+.group-student-add{
+    border: 2px solid rgb(161, 174, 180);
+}

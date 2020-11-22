@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
+import './Home.scss'
 
 class Home extends Component {
-  state={
-    studentsArr:[],
-    students:[]
+  constructor(){
+    super()
+    this.state={
+      studentsArr:[],
+      students:[],
+      isAddStudent:true,
+      studentName:''
+    }
   }
 
   componentWillMount(){
@@ -29,6 +35,42 @@ class Home extends Component {
        .catch(e => console.log("error", e))
   }
 
+  addStudent=(e)=>{
+    e.preventDefault(e);
+    fetch('http://localhost:8080/student',{
+        method:"POST",
+        headers:{
+            "Content-type":"application/json"
+        },
+        // body:JSON.stringify({name:this.state.studentName})
+        body:this.state.studentName
+    })
+    .then(res =>res.json())
+    .then(data =>{
+       console.log(data)
+    })
+    .catch(err => console.log("error", err))
+
+    this.getAllStudent();
+
+    this.setState({
+      isAddStudent:true,
+      studentName:''
+    })
+  }
+
+  addStudentChecked(){
+    this.setState({
+      isAddStudent:false
+    })
+  }
+
+  handleFieldChange(e){
+    this.setState({
+      studentName:e.target.value
+    })
+  }
+
   groupStudent(){
     fetch('http://localhost:8080/students/group',{
            method:"GET",
@@ -46,48 +88,69 @@ class Home extends Component {
        .catch(e => console.log("error", e))
   }
 
-  addStudent(student){
-    fetch('http://localhost:8080/student',{
-        method:"POST",
-        headers:{
-            "Content-type":"application/json"
-        },
-        body:JSON.stringify(student)
-    })
-    .then(res =>res.json())
-    .then(data =>{
-       console.log(data)
-    })
-    .catch(e => console.log("error", e))
-
-    this.getAllStudent();
-  }
-
-
   render() {
     return (
       <div className="home">
           <div>
-              <p>分组列表</p>
-              <button onClick={()=>this.groupStudent()}>分组学员</button>
-              {/* {this.state.studentsArr.map(index,stus=>(
-                  <ul key={index}>
-                    <p>第{index}组</p>
-                    {stus.map(stu => (
-                        <li key={stu.id}>{`${stu.id}. ${stu.name}`}</li>
-                    ))}
-                  </ul>
-              ))} */}
+              <div className="group-header">
+                <h2 className="list group-list">分组列表</h2>
+                <button type="button" onClick={()=>this.groupStudent()}>分组学员</button>
+              </div>
+              
+              <div className="group-dispatch">
+                {
+                  this.state.studentsArr.map((stus,index)=>(
+                    <ul key={index} className="group-index">
+                      <p className="group-name">{index+1}组</p>
+                      <div className="group-content">
+                        {
+                          stus.map(stu=>(
+                            <li className="group-student" key={stu.id}>{`${stu.id}.${stu.name}`}</li>
+                          ))
+                        }
+                      </div>
+                    </ul>
+                  ))
+                }
+              </div>
           </div>
 
             <div>
-              <p>学员列表</p>
+              <h2 className="list student-list">学员列表</h2>
               <div>     
-                  <ul>
-                    {this.state.students.map(stu => (
-                        <li key={stu.id}>{`${stu.id}. ${stu.name}`}</li>
-                    ))}
-                    <li><button onClick={()=>this.addStudent('王昭君')}>添加学员</button></li>
+                  <ul className="group-index">
+                  <div className="group-content group-content-student">
+                    {
+                        this.state.students.map(stu => (
+                            <li className="group-student" key={stu.id}>{`${stu.id}. ${stu.name}`}</li>
+                        ))
+                    }
+
+                    {/* <li className="group-student group-student-add" onClick={()=>this.addStudent('王昭君')}>+添加学员</li> */}
+
+                    {
+                       this.state.isAddStudent?
+                        <button type="button" className="group-student group-student-add" onClick={()=>this.addStudentChecked()}>+添加学员</button>
+                        :
+                        <div>
+                          <form onSubmit={this.addStudent}>
+                           <input 
+                              type="text"
+                              value={this.state.studentName}
+                              id="name" 
+                              onChange={(e)=>this.handleFieldChange(e)} />
+
+                            <input type="submit" 
+                                value="Submit" 
+                                disabled={!this.state.studentName}
+                                className="btn"
+                              />
+                          </form>
+                        </div>
+                    }
+
+                  </div>
+                    
                   </ul>
               </div>
             </div>       
